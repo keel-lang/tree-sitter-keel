@@ -1,0 +1,37 @@
+{
+  "name": "tree-sitter-keel",
+  "version": "0.1.9",
+  "description": "Tree-sitter grammar for the Keel programming language",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keel-lang/tree-sitter-keel"
+  },
+  "main": "bindings/node",
+  "keywords": [
+    "tree-sitter",
+    "keel",
+    "parser",
+    "grammar"
+  ],
+  "dependencies": {
+    "nan": "^2.18.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.22.0"
+  },
+  "scripts": {
+    "build": "tree-sitter generate && node-gyp build",
+    "test": "tree-sitter test",
+    "generate": "tree-sitter generate"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.keel",
+      "file-types": ["keel"],
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm",
+      "locals": "queries/locals.scm"
+    }
+  ]
+}

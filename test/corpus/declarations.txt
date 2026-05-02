@@ -1,0 +1,114 @@
+================================================================================
+Agent declaration
+================================================================================
+
+agent Greeter {
+  @on_start {
+    Io.show("hello")
+  }
+}
+
+run(Greeter)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (agent_declaration
+    name: (type_identifier)
+    (attribute
+      name: (identifier)
+      (block
+        (expr_statement
+          (postfix_expr
+            (primary_expr (type_identifier))
+            (call_suffix
+              (arg_list (arg (string_literal)))))))))
+  (run_statement
+    agent: (type_identifier)))
+
+================================================================================
+Agent with state
+================================================================================
+
+agent Counter {
+  state {
+    count: int = 0
+  }
+  @on_start {
+    self.count = self.count + 1
+  }
+}
+
+run(Counter)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (agent_declaration
+    name: (type_identifier)
+    (state_block
+      (state_field
+        name: (identifier)
+        type: (primitive_type)
+        default: (integer_literal)))
+    (attribute
+      name: (identifier)
+      (block
+        (self_assignment
+          field: (identifier)
+          value: (binary_expr
+            (primary_expr "self" (identifier))
+            (integer_literal))))))
+  (run_statement
+    agent: (type_identifier)))
+
+================================================================================
+Task declaration
+================================================================================
+
+task greet(name: str) -> str {
+  "Hello, {name}!"
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (task_declaration
+    name: (identifier)
+    (param_list
+      (param name: (identifier) type: (primitive_type)))
+    return_type: (primitive_type)
+    body: (block
+      (expr_statement
+        (string_literal
+          (string_interpolation (identifier)))))))
+
+================================================================================
+Type declaration (enum)
+================================================================================
+
+type Priority = Low | Medium | High
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (type_declaration
+    name: (type_identifier)))
+
+================================================================================
+Interface declaration
+================================================================================
+
+interface Summarizer {
+  task summarize(text: str) -> str
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (interface_declaration
+    name: (type_identifier)
+    (task_signature
+      name: (identifier)
+      (param_list (param name: (identifier) type: (primitive_type)))
+      return_type: (primitive_type))))

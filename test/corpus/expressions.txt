@@ -1,0 +1,133 @@
+================================================================================
+String interpolation
+================================================================================
+
+agent A {
+  @on_start {
+    name = "world"
+    Io.show("Hello, {name}!")
+  }
+}
+
+run(A)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (agent_declaration
+    name: (type_identifier)
+    (attribute
+      name: (identifier)
+      (block
+        (assignment
+          target: (identifier)
+          value: (string_literal))
+        (expr_statement
+          (postfix_expr
+            (primary_expr (type_identifier))
+            (call_suffix
+              (arg_list
+                (arg
+                  (string_literal
+                    (string_interpolation (identifier))))))))))))
+  (run_statement agent: (type_identifier)))
+
+================================================================================
+Duration literal
+================================================================================
+
+agent A {
+  @on_start {
+    Schedule.sleep(5.seconds)
+  }
+}
+
+run(A)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (agent_declaration
+    name: (type_identifier)
+    (attribute
+      name: (identifier)
+      (block
+        (expr_statement
+          (postfix_expr
+            (primary_expr (type_identifier))
+            (call_suffix
+              (arg_list
+                (arg
+                  (duration_literal
+                    value: (integer_literal)
+                    unit: "seconds"))))))))))
+  (run_statement agent: (type_identifier)))
+
+================================================================================
+When expression
+================================================================================
+
+agent A {
+  @on_start {
+    result = when priority {
+      Low    => "low"
+      High   => "high"
+      _      => "other"
+    }
+  }
+}
+
+run(A)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (agent_declaration
+    name: (type_identifier)
+    (attribute
+      name: (identifier)
+      (block
+        (assignment
+          target: (identifier)
+          value: (when_expr
+            subject: (identifier)
+            (when_arm (variant_pattern) (string_literal))
+            (when_arm (variant_pattern) (string_literal))
+            (when_arm (wildcard_pattern) (string_literal)))))))
+  (run_statement agent: (type_identifier)))
+
+================================================================================
+Lambda
+================================================================================
+
+agent A {
+  @on_start {
+    Schedule.every(1.hours, () => {
+      Io.show("tick")
+    })
+  }
+}
+
+run(A)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (agent_declaration
+    name: (type_identifier)
+    (attribute
+      name: (identifier)
+      (block
+        (expr_statement
+          (postfix_expr
+            (primary_expr (type_identifier))
+            (call_suffix
+              (arg_list
+                (arg (duration_literal value: (integer_literal) unit: "hours"))
+                (arg (lambda body: (block
+                  (expr_statement
+                    (postfix_expr
+                      (primary_expr (type_identifier))
+                      (call_suffix
+                        (arg_list (arg (string_literal)))))))))))))))
+  (run_statement agent: (type_identifier)))
