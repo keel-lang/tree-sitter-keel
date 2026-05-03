@@ -2,13 +2,13 @@
 Agent declaration
 ================================================================================
 
-agent Greeter {
+agent A {
   @on_start {
     Io.show("hello")
   }
 }
 
-run(Greeter)
+run(A)
 
 --------------------------------------------------------------------------------
 
@@ -20,9 +20,15 @@ run(Greeter)
       (block
         (expr_statement
           (postfix_expr
-            (primary_expr (type_identifier))
+            (postfix_expr
+              (primary_expr (type_identifier))
+              field: (identifier))
             (call_suffix
-              (arg_list (arg (string_literal)))))))))
+              (arg_list
+                (arg
+                  value: (primary_expr
+                    (string_literal
+                      (string_content)))))))))))
   (run_statement
     agent: (type_identifier)))
 
@@ -50,15 +56,17 @@ run(Counter)
       (state_field
         name: (identifier)
         type: (primitive_type)
-        default: (integer_literal)))
+        default: (primary_expr (integer_literal))))
     (attribute
       name: (identifier)
       (block
         (self_assignment
           field: (identifier)
           value: (binary_expr
-            (primary_expr "self" (identifier))
-            (integer_literal))))))
+            (postfix_expr
+              (primary_expr)
+              field: (identifier))
+            (primary_expr (integer_literal)))))))
   (run_statement
     agent: (type_identifier)))
 
@@ -67,7 +75,7 @@ Task declaration
 ================================================================================
 
 task greet(name: str) -> str {
-  "Hello, {name}!"
+  "Hello!"
 }
 
 --------------------------------------------------------------------------------
@@ -80,20 +88,8 @@ task greet(name: str) -> str {
     return_type: (primitive_type)
     body: (block
       (expr_statement
-        (string_literal
-          (string_interpolation (identifier)))))))
-
-================================================================================
-Type declaration (enum)
-================================================================================
-
-type Priority = Low | Medium | High
-
---------------------------------------------------------------------------------
-
-(source_file
-  (type_declaration
-    name: (type_identifier)))
+        (primary_expr
+          (string_literal (string_content)))))))
 
 ================================================================================
 Interface declaration

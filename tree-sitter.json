@@ -1,0 +1,22 @@
+{
+  "grammars": [
+    {
+      "name": "keel",
+      "camelcase": "Keel",
+      "scope": "source.keel",
+      "path": ".",
+      "highlights": "queries/highlights.scm",
+      "file-types": ["keel"],
+      "injection-regex": "keel"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.9",
+    "license": "MIT",
+    "description": "Tree-sitter grammar for the Keel programming language",
+    "authors": [{ "name": "keel-lang" }],
+    "links": {
+      "repository": "https://github.com/keel-lang/tree-sitter-keel"
+    }
+  }
+}

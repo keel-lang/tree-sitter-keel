@@ -8,6 +8,16 @@ module.exports = grammar({
 
   word: ($) => $.identifier,
 
+  conflicts: ($) => [
+    [$.primary_expr, $.self_assignment],
+    [$._literal, $.duration_literal],
+    [$.enum_variant, $._type],
+    [$.block, $.map_literal],
+    [$.enum_variant],
+    [$.primary_expr, $._type],
+    [$.lambda, $.primary_expr],
+  ],
+
   rules: {
     source_file: ($) => repeat($._top_level),
 
@@ -70,9 +80,7 @@ module.exports = grammar({
 
     _attribute_body: ($) =>
       choice(
-        $.string_literal,
         $.block,
-        seq('[', commaSep($._expr), ']'),
         $._expr,
       ),
 
@@ -85,6 +93,26 @@ module.exports = grammar({
         ')',
         optional(seq('->', field('return_type', $._type))),
         field('body', $.block),
+      ),
+
+    type_declaration: ($) =>
+      seq(
+        'type',
+        field('name', $.type_identifier),
+        '=',
+        choice(
+          field('enum', $.enum_definition),
+          field('alias', $._type),
+        ),
+      ),
+
+    enum_definition: ($) =>
+      seq($.enum_variant, repeat1(seq('|', $.enum_variant))),
+
+    enum_variant: ($) =>
+      seq(
+        field('name', $.type_identifier),
+        optional(seq('{', repeat($.state_field), '}')),
       ),
 
     interface_declaration: ($) =>
@@ -232,13 +260,13 @@ module.exports = grammar({
 
     binary_expr: ($) =>
       choice(
-        prec.left(1,  seq($._expr, choice('or'),          $._expr)),
-        prec.left(2,  seq($._expr, choice('and'),         $._expr)),
+        prec.left(1,  seq($._expr, 'or',                              $._expr)),
+        prec.left(2,  seq($._expr, 'and',                             $._expr)),
         prec.left(3,  seq($._expr, choice('==', '!=', '<', '>', '<=', '>='), $._expr)),
-        prec.left(4,  seq($._expr, choice('+', '-'),      $._expr)),
-        prec.left(5,  seq($._expr, choice('*', '/', '%'), $._expr)),
-        prec.left(6,  seq($._expr, '??',                  $._expr)),
-        prec.left(7,  seq($._expr, '|>',                  $._expr)),
+        prec.left(4,  seq($._expr, choice('+', '-'),                  $._expr)),
+        prec.left(5,  seq($._expr, choice('*', '/', '%'),             $._expr)),
+        prec.left(6,  seq($._expr, '??',                              $._expr)),
+        prec.left(7,  seq($._expr, '|>',                              $._expr)),
       ),
 
     unary_expr: ($) =>
@@ -337,7 +365,6 @@ module.exports = grammar({
         $._literal,
         $.identifier,
         $.type_identifier,
-        seq('self', '.', $.identifier),
         'self',
         $.list_literal,
         $.map_literal,
@@ -376,7 +403,7 @@ module.exports = grammar({
 
     string_content: (_) => /[^"\\{]+/,
 
-    triple_string_content: (_) => /(?:[^"\\{]|"{1,2}(?!"))+/,
+    triple_string_content: (_) => /[^"\\{]+|"{1,2}/,
 
     string_escape: (_) => /\\[ntr\\"{}]/,
 

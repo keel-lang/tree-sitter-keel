@@ -48,7 +48,7 @@
 (agent_declaration     name: (type_identifier) @type.definition)
 (task_declaration      name: (identifier)      @function.definition)
 (interface_declaration name: (type_identifier) @type.definition)
-(type_declaration      name: (type_identifier) @type.definition) 2>/dev/null || true
+(type_declaration      name: (type_identifier) @type.definition)
 (extern_declaration    name: (identifier)      @function.definition)
 (on_handler            event: (identifier)     @function.special)
 
@@ -73,7 +73,10 @@
   (call_suffix))
 
 ; Self field access
-(primary_expr "self" @variable.builtin "." (identifier) @variable.member)
+(postfix_expr
+  (primary_expr "self" @variable.builtin)
+  "."
+  field: (identifier) @variable.member)
 
 ; Self assignment
 (self_assignment field: (identifier) @variable.member)
