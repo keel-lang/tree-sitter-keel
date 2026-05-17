@@ -1,0 +1,123 @@
+================================================================================
+raise statement
+================================================================================
+
+agent A {
+  @on_start {
+    raise "oops"
+  }
+}
+
+run(A)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (agent_declaration
+    name: (type_identifier)
+    (attribute
+      name: (identifier)
+      (block
+        (raise_statement
+          (primary_expr
+            (string_literal
+              (string_content)))))))
+  (run_statement
+    agent: (type_identifier)))
+
+================================================================================
+break and continue in for loop
+================================================================================
+
+agent A {
+  @on_start {
+    for i in 1..10 if i > 5 {
+      break
+      continue
+    }
+  }
+}
+
+run(A)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (agent_declaration
+    name: (type_identifier)
+    (attribute
+      name: (identifier)
+      (block
+        (for_statement
+          binding: (identifier)
+          iterable: (binary_expr
+            (primary_expr (integer_literal))
+            (primary_expr (integer_literal)))
+          guard: (binary_expr
+            (primary_expr (identifier))
+            (primary_expr (integer_literal)))
+          body: (block
+            (break_statement)
+            (continue_statement))))))
+  (run_statement
+    agent: (type_identifier)))
+
+================================================================================
+augmented assignment
+================================================================================
+
+agent A {
+  @on_start {
+    x += 1
+    self.count += 2
+  }
+}
+
+run(A)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (agent_declaration
+    name: (type_identifier)
+    (attribute
+      name: (identifier)
+      (block
+        (aug_assignment
+          target: (identifier)
+          op: (aug_op)
+          value: (primary_expr (integer_literal)))
+        (aug_self_assignment
+          field: (identifier)
+          op: (aug_op)
+          value: (primary_expr (integer_literal))))))
+  (run_statement
+    agent: (type_identifier)))
+
+================================================================================
+range expression
+================================================================================
+
+agent A {
+  @on_start {
+    xs = 0..5
+  }
+}
+
+run(A)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (agent_declaration
+    name: (type_identifier)
+    (attribute
+      name: (identifier)
+      (block
+        (assignment
+          target: (identifier)
+          value: (binary_expr
+            (primary_expr (integer_literal))
+            (primary_expr (integer_literal)))))))
+  (run_statement
+    agent: (type_identifier)))

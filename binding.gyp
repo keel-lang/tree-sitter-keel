@@ -2,15 +2,29 @@
   "targets": [
     {
       "target_name": "tree_sitter_keel_binding",
+      "dependencies": [
+        "<!(node -p \"require('node-addon-api').targets\"):node_addon_api_except",
+      ],
       "include_dirs": [
-        "<!(node -e \"require('nan')\")",
-        "node_modules/tree-sitter/src"
+        "src",
       ],
       "sources": [
         "bindings/node/binding.cc",
-        "src/parser.c"
+        "src/parser.c",
+        # NOTE: if your language has an external scanner, add it here.
       ],
-      "cflags_c": ["-std=c99", "-fvisibility=hidden"]
+      "conditions": [
+        ["OS!='win'", {
+          "cflags_c": [
+            "-std=c11",
+          ],
+        }, { # OS == "win"
+          "cflags_c": [
+            "/std:c11",
+            "/utf-8",
+          ],
+        }],
+      ],
     }
   ]
 }

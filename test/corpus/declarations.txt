@@ -108,3 +108,38 @@ interface Summarizer {
       name: (identifier)
       (param_list (param name: (identifier) type: (primitive_type)))
       return_type: (primitive_type))))
+
+================================================================================
+Generic type declaration
+================================================================================
+
+type Bag[T] = [T]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (type_declaration
+    name: (type_identifier)
+    (type_param_list (type_identifier))
+    alias: (list_type (type_identifier))))
+
+================================================================================
+Generic task declaration
+================================================================================
+
+task identity[T](x: T) -> T {
+  x
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (task_declaration
+    name: (identifier)
+    (type_param_list (type_identifier))
+    (param_list
+      (param name: (identifier) type: (type_identifier)))
+    return_type: (type_identifier)
+    body: (block
+      (expr_statement
+        (primary_expr (identifier))))))

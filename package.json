@@ -8,27 +8,50 @@
     "url": "https://github.com/keel-lang/tree-sitter-keel"
   },
   "main": "bindings/node",
+  "types": "bindings/node",
   "keywords": [
     "tree-sitter",
     "keel",
     "parser",
     "grammar"
   ],
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**"
+  ],
   "dependencies": {
-    "nan": "^2.18.0"
+    "node-addon-api": "^7.1.0",
+    "node-gyp-build": "^4.8.0"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.21.0"
+  },
+  "peerDependenciesMeta": {
+    "tree_sitter": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.22.0"
+    "tree-sitter-cli": "^0.22.0",
+    "prebuildify": "^6.0.0"
   },
   "scripts": {
     "build": "tree-sitter generate && node-gyp build",
     "test": "tree-sitter test",
-    "generate": "tree-sitter generate"
+    "generate": "tree-sitter generate",
+    "install": "node-gyp-build",
+    "prebuildify": "prebuildify --napi --strip"
   },
   "tree-sitter": [
     {
       "scope": "source.keel",
-      "file-types": ["keel"],
+      "file-types": [
+        "keel"
+      ],
       "highlights": "queries/highlights.scm",
       "injections": "queries/injections.scm",
       "locals": "queries/locals.scm"
