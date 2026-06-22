@@ -21,11 +21,14 @@ run(A)
       (block
         (assignment
           target: (identifier)
-          value: (primary_expr (string_literal (string_content))))
+          value: (primary_expr
+            (string_literal
+              (string_content))))
         (expr_statement
           (postfix_expr
             (postfix_expr
-              (primary_expr (type_identifier))
+              (primary_expr
+                (type_identifier))
               field: (identifier))
             (call_suffix
               (arg_list
@@ -33,9 +36,19 @@ run(A)
                   value: (primary_expr
                     (string_literal
                       (string_content)
-                      (string_interpolation (primary_expr (identifier)))
+                      (string_interpolation
+                        (primary_expr
+                          (identifier)))
                       (string_content)))))))))))
-  (run_statement agent: (type_identifier)))
+  (expr_statement
+    (postfix_expr
+      (primary_expr
+        (identifier))
+      (call_suffix
+        (arg_list
+          (arg
+            value: (primary_expr
+              (type_identifier))))))))
 
 ================================================================================
 Duration literal
@@ -60,7 +73,8 @@ run(A)
         (expr_statement
           (postfix_expr
             (postfix_expr
-              (primary_expr (type_identifier))
+              (primary_expr
+                (type_identifier))
               field: (identifier))
             (call_suffix
               (arg_list
@@ -68,7 +82,15 @@ run(A)
                   value: (primary_expr
                     (duration_literal
                       value: (integer_literal)))))))))))
-  (run_statement agent: (type_identifier)))
+  (expr_statement
+    (postfix_expr
+      (primary_expr
+        (identifier))
+      (call_suffix
+        (arg_list
+          (arg
+            value: (primary_expr
+              (type_identifier))))))))
 
 ================================================================================
 Lambda
@@ -95,19 +117,23 @@ run(A)
         (expr_statement
           (postfix_expr
             (postfix_expr
-              (primary_expr (type_identifier))
+              (primary_expr
+                (type_identifier))
               field: (identifier))
             (call_suffix
               (arg_list
                 (arg
-                  value: (primary_expr (duration_literal value: (integer_literal))))
+                  value: (primary_expr
+                    (duration_literal
+                      value: (integer_literal))))
                 (arg
                   value: (lambda
                     body: (block
                       (expr_statement
                         (postfix_expr
                           (postfix_expr
-                            (primary_expr (type_identifier))
+                            (primary_expr
+                              (type_identifier))
                             field: (identifier))
                           (call_suffix
                             (arg_list
@@ -115,4 +141,35 @@ run(A)
                                 value: (primary_expr
                                   (string_literal
                                     (string_content))))))))))))))))))
-  (run_statement agent: (type_identifier)))
+  (expr_statement
+    (postfix_expr
+      (primary_expr
+        (identifier))
+      (call_suffix
+        (arg_list
+          (arg
+            value: (primary_expr
+              (type_identifier))))))))
+
+================================================================================
+Enum variant construction
+================================================================================
+
+x = Action.page { who: "primary" }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (assignment
+    (identifier)
+    (primary_expr
+      (struct_construction
+        (qualified_variant
+          (type_identifier)
+          (identifier))
+        (map_literal
+          (map_entry
+            (identifier)
+            (primary_expr
+              (string_literal
+                (string_content)))))))))

@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-keel",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Tree-sitter grammar for the Keel programming language",
   "license": "MIT",
   "repository": {

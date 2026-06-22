@@ -62,21 +62,29 @@ Requires the [tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/m
 | `task` declarations | ✓ |
 | `type` (enum + struct) | ✓ |
 | `interface` | ✓ |
+| `impl ... for` blocks | ✓ |
 | `extern` | ✓ |
-| `use` / `from` | ✓ |
+| `use std/<name>` / `from` | ✓ |
 | `state` blocks | ✓ |
 | `on` event handlers | ✓ |
-| `@attribute` expressions | ✓ |
+| `@attribute` expressions (incl. `@tools` guards) | ✓ |
 | `if` / `else` | ✓ |
 | `when` pattern matching | ✓ |
-| `for` loops | ✓ |
-| `try` / `catch` | ✓ |
+| `for` / `while` loops | ✓ |
+| `try` / `catch`, `raise`, `break` / `continue` | ✓ |
+| `test` / `setup` / `assert` blocks | ✓ |
+| Generics (`task f[T]`, `type Pair[A, B]`, `list[T]`) | ✓ |
+| `self` / variadic (`...`) / default params | ✓ |
+| Destructuring (`{ a, b } =`) | ✓ |
+| Enum-variant construction (`Action.page { ... }`) | ✓ |
 | Lambda (`() => ...`) | ✓ |
-| String interpolation (`{expr}`) | ✓ |
+| String interpolation (`{expr}`, `{expr:.2f}`) | ✓ |
 | Triple-quoted strings | ✓ |
 | Duration literals (`5.seconds`) | ✓ |
+| Augmented assignment (`+=`), range (`..`) | ✓ |
 | Null-safe access (`?.`, `??`) | ✓ |
 | Pipeline (`\|>`) | ✓ |
+| stdlib namespace highlighting (`ai`, `io`, `http`, …) | ✓ |
 
 ## Links
 

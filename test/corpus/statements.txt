@@ -22,8 +22,15 @@ run(A)
           (primary_expr
             (string_literal
               (string_content)))))))
-  (run_statement
-    agent: (type_identifier)))
+  (expr_statement
+    (postfix_expr
+      (primary_expr
+        (identifier))
+      (call_suffix
+        (arg_list
+          (arg
+            value: (primary_expr
+              (type_identifier))))))))
 
 ================================================================================
 break and continue in for loop
@@ -51,16 +58,27 @@ run(A)
         (for_statement
           binding: (identifier)
           iterable: (binary_expr
-            (primary_expr (integer_literal))
-            (primary_expr (integer_literal)))
+            (primary_expr
+              (integer_literal))
+            (primary_expr
+              (integer_literal)))
           guard: (binary_expr
-            (primary_expr (identifier))
-            (primary_expr (integer_literal)))
+            (primary_expr
+              (identifier))
+            (primary_expr
+              (integer_literal)))
           body: (block
             (break_statement)
             (continue_statement))))))
-  (run_statement
-    agent: (type_identifier)))
+  (expr_statement
+    (postfix_expr
+      (primary_expr
+        (identifier))
+      (call_suffix
+        (arg_list
+          (arg
+            value: (primary_expr
+              (type_identifier))))))))
 
 ================================================================================
 augmented assignment
@@ -86,13 +104,22 @@ run(A)
         (aug_assignment
           target: (identifier)
           op: (aug_op)
-          value: (primary_expr (integer_literal)))
+          value: (primary_expr
+            (integer_literal)))
         (aug_self_assignment
           field: (identifier)
           op: (aug_op)
-          value: (primary_expr (integer_literal))))))
-  (run_statement
-    agent: (type_identifier)))
+          value: (primary_expr
+            (integer_literal))))))
+  (expr_statement
+    (postfix_expr
+      (primary_expr
+        (identifier))
+      (call_suffix
+        (arg_list
+          (arg
+            value: (primary_expr
+              (type_identifier))))))))
 
 ================================================================================
 range expression
@@ -117,7 +144,71 @@ run(A)
         (assignment
           target: (identifier)
           value: (binary_expr
-            (primary_expr (integer_literal))
-            (primary_expr (integer_literal)))))))
-  (run_statement
-    agent: (type_identifier)))
+            (primary_expr
+              (integer_literal))
+            (primary_expr
+              (integer_literal)))))))
+  (expr_statement
+    (postfix_expr
+      (primary_expr
+        (identifier))
+      (call_suffix
+        (arg_list
+          (arg
+            value: (primary_expr
+              (type_identifier))))))))
+
+================================================================================
+While loop
+================================================================================
+
+while n > 0 {
+  n -= 1
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (while_statement
+    (binary_expr
+      (primary_expr
+        (identifier))
+      (primary_expr
+        (integer_literal)))
+    (block
+      (aug_assignment
+        (identifier)
+        (aug_op)
+        (primary_expr
+          (integer_literal))))))
+
+================================================================================
+Test block with assert
+================================================================================
+
+test "adds" {
+  assert add(1, 2) == 3
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (test_block
+    (string_literal
+      (string_content))
+    (block
+      (assert_statement
+        (binary_expr
+          (postfix_expr
+            (primary_expr
+              (identifier))
+            (call_suffix
+              (arg_list
+                (arg
+                  (primary_expr
+                    (integer_literal)))
+                (arg
+                  (primary_expr
+                    (integer_literal))))))
+          (primary_expr
+            (integer_literal)))))))
